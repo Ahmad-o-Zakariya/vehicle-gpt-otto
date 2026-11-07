@@ -1,0 +1,19 @@
+seed: 20261106
+unit: injection_pattern
+train_development:
+- inj:thermal:tripb01
+- inj:thermal:tripb04
+- inj:thermal:tripb09
+- inj:thermal:tripb12
+held_out_test:
+- inj:thermal:tripb14
+- inj:adas:heldout_camera_occlusion
+pattern_families:
+  inj:thermal:tripb01: thermal_overheat_recurrence
+  inj:thermal:tripb04: thermal_overheat_recurrence
+  inj:thermal:tripb09: thermal_overheat_recurrence
+  inj:thermal:tripb12: thermal_overheat_recurrence
+  inj:thermal:tripb14: thermal_overheat_target_variant
+  inj:adas:heldout_camera_occlusion: adas_disengagement_reason
+config_sha256: 50c97280fe82c8a49d6c19cae4cd76101834920266fc8626f7af8588780c5411
+status: generated; held-out target and ADAS reason family excluded from development

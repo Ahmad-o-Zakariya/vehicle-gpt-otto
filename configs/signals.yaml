@@ -1,0 +1,419 @@
+version: 1
+canonical_unit_policy: SI where source semantics allow
+expected_sampling_policy: null means cadence is measured from timestamps; never assume fixed-rate sampling
+signals:
+  vehicle.speed:
+    unit: m/s
+    data_type: float
+    expected_sampling_hz: null
+    valid_range: [0, null]
+    valid_range_basis: physical-plausibility check only; do not drop values outside range
+    description: Vehicle speed from source telemetry.
+    source_mappings:
+      - dataset: ved
+        field: Vehicle Speed[km/h]
+        source_unit: km/h
+        conversion: value / 3.6
+      - dataset: tum_bmw_i3
+        expected_sampling_hz: 10
+        field: Velocity [km/h]
+        source_unit: km/h
+        conversion: value / 3.6
+      - dataset: comma2k19
+        field: processed_log/CAN/speed/value
+        source_unit: m/s
+        conversion: identity
+      - dataset: openlka
+        expected_sampling_hz: 10
+        field: vEgo
+        source_unit: m/s
+        conversion: identity
+    quality_semantics: Preserve source missingness, nonfinite values, duplicates and time gaps; do not interpolate.
+    provenance_expectations: [real]
+  vehicle.latitude:
+    unit: deg
+    data_type: float
+    expected_sampling_hz: null
+    valid_range: [-90, 90]
+    description: GPS latitude from VED telemetry.
+    source_mappings:
+      - dataset: ved
+        field: Latitude[deg]
+        source_unit: deg
+        conversion: identity
+    quality_semantics: Preserve missing and invalid coordinates with a quality flag.
+    provenance_expectations: [real]
+  vehicle.longitude:
+    unit: deg
+    data_type: float
+    expected_sampling_hz: null
+    valid_range: [-180, 180]
+    description: GPS longitude from VED telemetry.
+    source_mappings:
+      - dataset: ved
+        field: Longitude[deg]
+        source_unit: deg
+        conversion: identity
+    quality_semantics: Preserve missing and invalid coordinates with a quality flag.
+    provenance_expectations: [real]
+  battery.voltage:
+    unit: V
+    data_type: float
+    expected_sampling_hz: null
+    valid_range: [0, null]
+    valid_range_basis: physical-plausibility check only; do not drop values outside range
+    description: High-voltage battery terminal voltage.
+    source_mappings:
+      - dataset: ved
+        field: HV Battery Voltage[V]
+        source_unit: V
+        conversion: identity
+      - dataset: tum_bmw_i3
+        expected_sampling_hz: 10
+        field: Battery Voltage [V]
+        source_unit: V
+        conversion: identity
+    quality_semantics: Keep source polarity/encoding and out-of-range values visible; no clipping.
+    provenance_expectations: [real]
+  battery.current:
+    unit: A
+    data_type: float
+    expected_sampling_hz: null
+    valid_range: null
+    description: High-voltage battery current; preserve each source's sign convention.
+    source_mappings:
+      - dataset: ved
+        field: HV Battery Current[A]
+        source_unit: A
+        conversion: identity
+      - dataset: tum_bmw_i3
+        expected_sampling_hz: 10
+        field: Battery Current [A]
+        source_unit: A
+        conversion: identity
+    quality_semantics: Record source sign without reinterpretation; retain missing/nonfinite readings.
+    provenance_expectations: [real]
+  battery.soc:
+    unit: percent
+    data_type: float
+    expected_sampling_hz: null
+    valid_range: [0, 100]
+    description: Battery state of charge.
+    source_mappings:
+      - dataset: ved
+        field: HV Battery SOC[%]
+        source_unit: percent
+        conversion: identity
+      - dataset: tum_bmw_i3
+        expected_sampling_hz: 10
+        field: SoC [%]
+        source_unit: percent
+        conversion: identity
+    quality_semantics: Do not fill source NaN/blank readings; preserve source values outside the declared plausibility range.
+    provenance_expectations: [real]
+  battery.temperature:
+    unit: degC
+    data_type: float
+    expected_sampling_hz: null
+    valid_range: null
+    description: Measured BMW i3 battery temperature; field is absent from selected VED Leaf rows.
+    source_mappings:
+      - dataset: tum_bmw_i3
+        expected_sampling_hz: 10
+        field: Battery Temperature [°C]
+        source_unit: degC
+        conversion: identity
+    quality_semantics: Preserve trip-relative timestamp, source gaps and missingness.
+    provenance_expectations: [real]
+  hvac.heater_power:
+    unit: W
+    data_type: float
+    expected_sampling_hz: null
+    valid_range: [0, null]
+    valid_range_basis: physical-plausibility check only; do not drop values outside range
+    description: Source heater power mapped to watts; signal semantics remain dataset-specific.
+    source_mappings:
+      - dataset: ved
+        field: Heater Power[Watts]
+        source_unit: W
+        conversion: identity
+      - dataset: tum_bmw_i3
+        expected_sampling_hz: 10
+        field: Heating Power LIN [W]
+        source_unit: W
+        conversion: identity
+    quality_semantics: Do not add CAN and LIN readings together; keep the selected source mapping explicit.
+    provenance_expectations: [real]
+  hvac.heater_power_can:
+    unit: W
+    data_type: float
+    expected_sampling_hz: null
+    valid_range: [0, null]
+    valid_range_basis: physical-plausibility check only; do not drop values outside range
+    description: BMW i3 CAN-reported heating power.
+    source_mappings:
+      - dataset: tum_bmw_i3
+        expected_sampling_hz: 10
+        field: Heating Power CAN [kW]
+        source_unit: kW
+        conversion: value * 1000
+    quality_semantics: Preserve separately from LIN-reported power; no implicit merge.
+    provenance_expectations: [real]
+  hvac.ac_power:
+    unit: W
+    data_type: float
+    expected_sampling_hz: null
+    valid_range: [0, null]
+    valid_range_basis: physical-plausibility check only; do not drop values outside range
+    description: Air-conditioning power.
+    source_mappings:
+      - dataset: ved
+        field: Air Conditioning Power[Watts]
+        source_unit: W
+        conversion: identity
+      - dataset: tum_bmw_i3
+        expected_sampling_hz: 10
+        field: AirCon Power [kW]
+        source_unit: kW
+        conversion: value * 1000
+    quality_semantics: VED A/C kW column is missing for selected Leafs; use the separately measured watts field.
+    provenance_expectations: [real]
+  vehicle.fuel_rate:
+    unit: L/h
+    data_type: float
+    expected_sampling_hz: null
+    valid_range: [0, null]
+    valid_range_basis: physical-plausibility check only; do not drop values outside range
+    description: Source-reported fuel rate; verified for selected ICE VehId 119 only.
+    source_mappings:
+      - dataset: ved
+        field: Fuel Rate[L/hr]
+        source_unit: L/h
+        conversion: identity
+    quality_semantics: Keep source NaN and blank rows explicit; no MAF-to-fuel estimate.
+    provenance_expectations: [real]
+  adas.lateral_control_enabled:
+    unit: boolean
+    data_type: boolean
+    expected_sampling_hz: null
+    valid_range: [0, 1]
+    description: OpenLKA sample's op_lat_enable observation; not an OEM disengagement reason.
+    source_mappings:
+      - dataset: openlka
+        expected_sampling_hz: 10
+        field: op_lat_enable
+        source_unit: boolean
+        conversion: true -> 1; false -> 0
+    quality_semantics: State transitions are observed; no reason code is present in the inspected sample.
+    provenance_expectations: [real]
+  vehicle.steering_angle:
+    unit: deg
+    data_type: float
+    expected_sampling_hz: null
+    valid_range: null
+    description: comma2k19 processed steering angle; raw-frame mapping still requires adapter validation.
+    source_mappings:
+      - dataset: comma2k19
+        field: processed_log/CAN/steering_angle/value
+        source_unit: deg
+        conversion: identity
+      - dataset: comma2k19
+        field: Toyota DBC STEER_ANGLE_SENSOR.STEER_ANGLE plus STEER_FRACTION
+        source_unit: deg
+        conversion: sum decoded angle and fraction
+        status: validated against all segment raw frames and processed samples
+    quality_semantics: Keep processed source channel and raw-decoder validation status distinct.
+    provenance_expectations: [real]
+  vehicle.wheel_speed_fl:
+    unit: m/s
+    data_type: float
+    expected_sampling_hz: null
+    valid_range: [0, null]
+    valid_range_basis: physical-plausibility check only; do not drop values outside range
+    description: Front-left wheel speed from verified comma2k19 raw CAN mapping.
+    source_mappings:
+      - dataset: comma2k19
+        field: processed_log/CAN/wheel_speed/value (front-left component)
+        source_unit: m/s
+        conversion: identity
+      - dataset: comma2k19
+        field: Toyota DBC WHEEL_SPEEDS.WHEEL_SPEED_FL
+        source_unit: km/h
+        conversion: value / 3.6
+        status: validated against all segment raw frames and processed samples
+    quality_semantics: Preserve processed and raw decoded values separately during validation.
+    provenance_expectations: [real]
+  vehicle.wheel_speed_fr:
+    unit: m/s
+    data_type: float
+    expected_sampling_hz: null
+    valid_range: [0, null]
+    description: Front-right wheel speed from verified comma2k19 raw CAN mapping.
+    source_mappings:
+      - dataset: comma2k19
+        field: processed_log/CAN/wheel_speed/value (front-right component)
+        source_unit: m/s
+        conversion: identity
+      - dataset: comma2k19
+        field: Toyota DBC WHEEL_SPEEDS.WHEEL_SPEED_FR
+        source_unit: km/h
+        conversion: ((raw * 0.01) - 67.67) / 3.6
+        status: validated against raw frames
+    quality_semantics: Preserve per-wheel sample times and source gaps.
+    provenance_expectations: [real]
+  vehicle.wheel_speed_rl:
+    unit: m/s
+    data_type: float
+    expected_sampling_hz: null
+    valid_range: [0, null]
+    description: Rear-left wheel speed from verified comma2k19 raw CAN mapping.
+    source_mappings:
+      - dataset: comma2k19
+        field: processed_log/CAN/wheel_speed/value (rear-left component)
+        source_unit: m/s
+        conversion: identity
+      - dataset: comma2k19
+        field: Toyota DBC WHEEL_SPEEDS.WHEEL_SPEED_RL
+        source_unit: km/h
+        conversion: ((raw * 0.01) - 67.67) / 3.6
+        status: validated against raw frames
+    quality_semantics: Preserve per-wheel sample times and source gaps.
+    provenance_expectations: [real]
+  vehicle.wheel_speed_rr:
+    unit: m/s
+    data_type: float
+    expected_sampling_hz: null
+    valid_range: [0, null]
+    description: Rear-right wheel speed from verified comma2k19 raw CAN mapping.
+    source_mappings:
+      - dataset: comma2k19
+        field: processed_log/CAN/wheel_speed/value (rear-right component)
+        source_unit: m/s
+        conversion: identity
+      - dataset: comma2k19
+        field: Toyota DBC WHEEL_SPEEDS.WHEEL_SPEED_RR
+        source_unit: km/h
+        conversion: ((raw * 0.01) - 67.67) / 3.6
+        status: validated against raw frames
+    quality_semantics: Preserve per-wheel sample times and source gaps.
+    provenance_expectations: [real]
+  vehicle.ambient_temperature:
+    unit: degC
+    data_type: float
+    expected_sampling_hz: null
+    valid_range: null
+    description: Outside or ambient temperature from source telemetry.
+    source_mappings:
+      - dataset: ved
+        field: OAT[DegC]
+        source_unit: degC
+        conversion: identity
+      - dataset: tum_bmw_i3
+        expected_sampling_hz: 10
+        field: Ambient Temperature [°C]
+        source_unit: degC
+        conversion: identity
+    quality_semantics: Preserve source missingness; cabin temperature is a separate signal.
+    provenance_expectations: [real]
+  battery.temperature_max:
+    unit: degC
+    data_type: float
+    expected_sampling_hz: 10
+    valid_range: null
+    description: BMW i3 maximum reported battery temperature.
+    source_mappings:
+      - dataset: tum_bmw_i3
+        expected_sampling_hz: 10
+        field: max. Battery Temperature [°C]
+        source_unit: degC
+        conversion: identity
+    quality_semantics: Keep distinct from Battery Temperature [°C].
+    provenance_expectations: [real]
+  thermal.coolant_temperature_inlet:
+    unit: degC
+    data_type: float
+    expected_sampling_hz: 10
+    valid_range: null
+    description: Measured BMW i3 coolant inlet temperature.
+    source_mappings:
+      - dataset: tum_bmw_i3
+        expected_sampling_hz: 10
+        field: Coolant Temperature Inlet [°C]
+        source_unit: degC
+        conversion: identity
+    quality_semantics: Retain source gaps; injected dropout is stored in overlay.
+    provenance_expectations: [real]
+  thermal.coolant_temperature_heatercore:
+    unit: degC
+    data_type: float
+    expected_sampling_hz: 10
+    valid_range: null
+    description: BMW i3 heater-core coolant temperature.
+    source_mappings:
+      - dataset: tum_bmw_i3
+        expected_sampling_hz: 10
+        field: Coolant Temperature Heatercore [°C]
+        source_unit: degC
+        conversion: identity
+    quality_semantics: Preserve source timestamp and missingness.
+    provenance_expectations: [real]
+  thermal.heat_exchanger_temperature:
+    unit: degC
+    data_type: float
+    expected_sampling_hz: 10
+    valid_range: null
+    description: BMW i3 heat exchanger temperature.
+    source_mappings:
+      - dataset: tum_bmw_i3
+        expected_sampling_hz: 10
+        field: Heat Exchanger Temperature [°C]
+        source_unit: degC
+        conversion: identity
+    quality_semantics: Preserve source timestamp and missingness.
+    provenance_expectations: [real]
+  thermal.cabin_temperature:
+    unit: degC
+    data_type: float
+    expected_sampling_hz: 10
+    valid_range: null
+    description: Cabin temperature sensor reading.
+    source_mappings:
+      - dataset: tum_bmw_i3
+        expected_sampling_hz: 10
+        field: Cabin Temperature Sensor [°C]
+        source_unit: degC
+        conversion: identity
+    quality_semantics: Preserve sensor identity and source missingness.
+    provenance_expectations: [real]
+  hvac.heater_enabled:
+    unit: boolean
+    data_type: boolean
+    expected_sampling_hz: 10
+    valid_range: [0, 1]
+    description: Source Heater Signal state in TUM BMW i3 trips.
+    source_mappings:
+      - dataset: tum_bmw_i3
+        expected_sampling_hz: 10
+        field: Heater Signal
+        source_unit: boolean
+        conversion: true -> 1; false -> 0
+    quality_semantics: Preserve observed state; synthetic changes live in overlay.
+    provenance_expectations: [real]
+  thermal.coolant_pump_duty:
+    unit: percent
+    data_type: float
+    expected_sampling_hz: null
+    valid_range: [0, 100]
+    description: Synthetic coolant pump duty used only in seeded thermal fault overlays.
+    source_mappings: []
+    quality_semantics: Synthetic overlay signal; never represented as a TUM measurement.
+    provenance_expectations: [synthetic]
+  scenario.distractor_load:
+    unit: arbitrary_unit
+    data_type: float
+    expected_sampling_hz: null
+    valid_range: [0, 100]
+    description: Synthetic unrelated distractor used to test unsupported causal attribution.
+    source_mappings: []
+    quality_semantics: Synthetic overlay signal with no physical interpretation.
+    provenance_expectations: [synthetic]

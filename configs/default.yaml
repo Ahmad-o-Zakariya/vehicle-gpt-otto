@@ -1,0 +1,13 @@
+project: VehicleGPT dataset pipeline
+random_seed: 20261106
+source_timezone: null  # Preserve source timezone semantics; no global timezone is assumed.
+storage:
+  database: data/processed/vehicle_gpt.sqlite
+  ground_truth: data/processed/ground_truth/injections.json
+  raw_manifest: data/manifests/raw_files.json
+  split_manifest: data/manifests/splits.json
+processing:
+  offline_only: true
+  preserve_source_timestamps: true
+  interpolate_missing: false
+  numeric_precision: 8

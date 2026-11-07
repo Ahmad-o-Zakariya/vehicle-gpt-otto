@@ -1,0 +1,21 @@
+seed: 20261106
+version: thermal-overlay-v1
+thermal:
+  vehicle_id: tum_bmw_i3:bmw_i3
+  trip_ids: [TripB01, TripB04, TripB09, TripB12, TripB14]
+  control_trip_ids: [TripA01, TripB02]
+  held_out_trip_id: TripB14
+  event_offset_seconds_range: [600, 660]
+  ramp_duration_seconds: 300
+  sample_period_seconds: 0.1
+  battery_temperature_rise_c: 20
+  pump_duty_initial_percent: 80
+  pump_duty_drop_percent: 10
+  pump_drop_start_seconds_before_t0: 180
+  dropout_seconds_before_t0: 60
+  dropout_seconds_after_t0: 60
+  distractor_start_seconds_before_t0: 90
+  distractor_value: 100
+adas:
+  reason_code: CAMERA_OCCLUSION_SYNTHETIC
+  description: Synthetic disengagement example; OpenLKA sample provides state transitions but no reason codes.

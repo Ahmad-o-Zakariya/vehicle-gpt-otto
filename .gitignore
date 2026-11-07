@@ -1,0 +1,39 @@
+# Python environments and caches
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.pytest-tmp/
+.ruff_cache/
+.hypothesis/
+
+# Local datasets and databases
+/data/
+*.sqlite
+*.sqlite3
+*.db
+*.db-wal
+*.db-shm
+
+# Model weights
+
+# Generated artifacts
+/artifacts/
+
+# OpenLKA video assets: redistribution not permitted under published terms
+/DATASET/OpenLKA-main/static/videos/
+
+# comma2k19 raw driving video: retain locally pending redistribution permission
+/DATASET/comma2k19-master/**/video.hevc
+
+# OpenLKA raw media, extracted frames and annotations
+/DATASET/OpenLKA-main/OpenLKA-Failure-Sample/**/*.mp4
+/DATASET/OpenLKA-main/OpenLKA-Failure-Sample/**/*.jpg
+/DATASET/OpenLKA-main/OpenLKA-Failure-Sample/**/*.jpeg
+/DATASET/OpenLKA-main/OpenLKA-Failure-Sample/**/*.png
+/DATASET/OpenLKA-main/OpenLKA-Failure-Sample/**/*.webp
+/DATASET/OpenLKA-main/OpenLKA-Failure-Sample/**/*.gif
+/DATASET/OpenLKA-main/OpenLKA-Failure-Sample/**/*.json
+
+# comma2k19 sample data: retain locally pending data redistribution confirmation
+/DATASET/comma2k19-master/Example_1/

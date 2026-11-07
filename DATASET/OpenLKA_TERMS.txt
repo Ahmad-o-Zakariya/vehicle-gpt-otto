@@ -1,0 +1,18 @@
+OpenLKA DATA USE NOTICE
+
+The OpenLKA dataset is subject to the data terms published by its maintainers.
+The MIT license for OpenLKA code and DBC files does not automatically apply
+to the dataset data.
+
+Conditions for shared derived tables:
+- Cite the OpenLKA IEEE ITSC 2025 paper.
+- Attribute OpenLKA in derived work.
+- Do not attempt to re-identify drivers, vehicles, or people.
+- Do not redistribute raw video.
+- Share derived tables only with these terms attached.
+
+Official terms and citation:
+https://openlka.github.io/
+
+This notice summarizes the published terms; it does not grant additional
+permissions or replace the dataset maintainers' terms.

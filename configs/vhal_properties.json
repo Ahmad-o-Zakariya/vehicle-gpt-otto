@@ -1,0 +1,7 @@
+{
+  "source": "AOSP hardware/interfaces automotive/vehicle/aidl_property VehicleProperty.aidl (Android 16 release)",
+  "properties": [
+    {"id": 291504647, "name": "PERF_VEHICLE_SPEED", "data_type": "float", "unit": "m/s", "access": "READ", "change_mode": "CONTINUOUS", "area": "GLOBAL", "availability": "SIMULATOR_SUPPORTED_REAL_VEHICLE_UNVERIFIED"},
+    {"id": 291504644, "name": "PERF_ODOMETER", "data_type": "float", "unit": "km", "access": "READ", "change_mode": "CONTINUOUS", "area": "GLOBAL", "availability": "SIMULATOR_SUPPORTED_REAL_VEHICLE_UNVERIFIED"}
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "inspected_on": "2026-11-06",
+  "workspace": "/home/arcues/Projects/OTTO",
+  "sources": [
+    {
+      "id": "ved",
+      "path": "DATASET/VED-master/Data",
+      "archives": [
+        {
+          "name": "VED_DynamicData_Part1.7z",
+          "bytes": 82773769
+        },
+        {
+          "name": "VED_DynamicData_Part2.7z",
+          "bytes": 93662910
+        }
+      ],
+      "internal_files": {
+        "weekly_csv": 54,
+        "static_xlsx": 2
+      },
+      "parsed_rows": 22436808,
+      "vehicle_trip_pairs": 32552,
+      "license": "Apache-2.0 (local license file)",
+      "status": "real measurements; source time retained"
+    },
+    {
+      "id": "tum_bmw_i3",
+      "measurement_path": "DATASET/Measurement Data",
+      "simulation_path": "DATASET/Simulation Data",
+      "measurement_files": {
+        "trip_csv": 70,
+        "overview_xlsx": 1,
+        "rows": 1094793
+      },
+      "simulation_files": {
+        "csv": 24,
+        "mat": 24
+      },
+      "measured_interval_seconds": 0.1,
+      "license": "not verified from local source files",
+      "status": "measurements and simulations kept distinct"
+    },
+    {
+      "id": "comma2k19",
+      "path": "DATASET/comma2k19-master/Example_1/b0c9d2329ad1606b|2018-08-02--08-34-47/40",
+      "segment_duration": "approximately one minute",
+      "raw_can": true,
+      "processed_can_channels": [
+        "speed",
+        "wheel_speed",
+        "steering_angle",
+        "radar"
+      ],
+      "dbc_candidate": "Toyota RAV4 2017-18 / toyota_new_mc_pt_generated",
+      "dbc_frame_validation": "passed; steering 4,974/4,974 exact; wheel speed 19,896 values max error 3.55e-15 m/s",
+      "license": "MIT LICENSE in local repository; dataset-specific terms not independently verified",
+      "dbc_frame_counts": {
+        "total_raw_frames": 135468,
+        "can_id_0x025": 4974,
+        "can_id_0x0AA": 4974,
+        "can_id_0x0B4": 2487
+      }
+    },
+    {
+      "id": "openlka_failure_sample",
+      "path": "DATASET/OpenLKA-main/OpenLKA-Failure-Sample",
+      "csv_files": 27,
+      "rows": 14999,
+      "op_lat_enable_transitions": {
+        "false_to_true": 30,
+        "true_to_false": 25
+      },
+      "files_with_unix_time": 25,
+      "reason_code_columns": [],
+      "license": "data terms per OpenLKA project page; code/DBC MIT; no redistribution of raw video"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+source: commaai/opendbc
+source_url: https://github.com/commaai/opendbc
+retrieved: 2026-11-06
+vehicle_platform: Toyota RAV4 2017-18
+platform_dbc: toyota_new_mc_pt_generated
+source_segment_vehicle_evidence: comma2k19 README maps dongle b0c9d2329ad1606b to RAV4; model year unspecified
+message_mappings:
+  37:
+    name: STEER_ANGLE_SENSOR
+    length_bytes: 8
+    signals:
+      steering_angle:
+        name: STEER_ANGLE
+        start_bit: 3
+        bit_length: 12
+        byte_order: big_endian
+        signed: true
+        factor: 1.5
+        offset: 0
+        unit: deg
+      steering_fraction:
+        name: STEER_FRACTION
+        start_bit: 39
+        bit_length: 4
+        byte_order: big_endian
+        signed: true
+        factor: 0.1
+        offset: 0
+        unit: deg
+    combine: STEER_ANGLE + STEER_FRACTION
+  170:
+    name: WHEEL_SPEEDS
+    length_bytes: 8
+    signals:
+      wheel_speed_fr:
+        name: WHEEL_SPEED_FR
+        start_bit: 7
+        bit_length: 16
+      wheel_speed_fl:
+        name: WHEEL_SPEED_FL
+        start_bit: 23
+        bit_length: 16
+      wheel_speed_rr:
+        name: WHEEL_SPEED_RR
+        start_bit: 39
+        bit_length: 16
+      wheel_speed_rl:
+        name: WHEEL_SPEED_RL
+        start_bit: 55
+        bit_length: 16
+    factor: 0.01
+    offset: -67.67
+    dbc_unit: km/h
+    canonical_unit: m/s
+    conversion: ((raw * 0.01) - 67.67) / 3.6
+    signed: false

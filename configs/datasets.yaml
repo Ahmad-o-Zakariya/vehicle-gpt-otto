@@ -1,0 +1,22 @@
+# Inputs remain in their supplied DATASET paths; raw copies are not made here.
+ved:
+  root: DATASET/VED-master
+  selected_ev_vehicle_id: 455
+  selected_ice_vehicle_id: 119
+  dynamic_archives:
+    - DATASET/VED-master/Data/VED_DynamicData_Part1.7z
+    - DATASET/VED-master/Data/VED_DynamicData_Part2.7z
+
+tum_bmw_i3:
+  measurement_root: DATASET/Measurement Data
+  simulation_root: DATASET/Simulation Data
+  include_measurements: true
+  include_simulation: false
+
+comma2k19:
+  root: DATASET/comma2k19-master/Example_1/b0c9d2329ad1606b|2018-08-02--08-34-47/40
+  purpose: can_replay_only
+
+openlka:
+  root: DATASET/OpenLKA-main/OpenLKA-Failure-Sample
+  purpose: observed_adas_state_evidence
